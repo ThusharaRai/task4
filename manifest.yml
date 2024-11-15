@@ -1,0 +1,29 @@
+---
+applications:
+- name: task4
+  memory: 256M
+  buildpacks:
+  - nodejs_buildpack
+  command: npm start
+  services:
+    - my-xsuaa-service
+ 
+ 
+- name: my-approuter1
+  path: ./approuter
+  memory: 128M
+  buildpacks:
+  - nodejs_buildpack
+  routes:
+  - route: my-approuter1-route.cfapps.us10-001.hana.ondemand.com
+  env:
+    destinations: >
+      [
+        {
+          "name":"cap-app-destination",
+          "url":"https://task4.cfapps.us10-001.hana.ondemand.com",
+          "forwardAuthToken": true
+        }
+      ]
+  services:
+      - my-xsuaa-service
